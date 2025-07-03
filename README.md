@@ -1,5 +1,3 @@
-
-
 ## 📘 RESTful API: Todo App with Express & PostgreSQL
 
 Project ini adalah RESTful API menggunakan **Node.js**, **Express**, dan **PostgreSQL**, dengan fitur manajemen user dan todo.
@@ -29,6 +27,10 @@ https://documenter.getpostman.com/view/45884667/2sB34Zsjcj
 
 ---
 
+### ERD
+<img width="295" alt="image" src="https://github.com/user-attachments/assets/a84b54da-94bd-46d2-8927-c202315cc6d2" />
+
+---
 ### 📦 Instalasi
 
 ```bash
@@ -46,3 +48,4 @@ npm run dev
 Server akan berjalan di: `http://localhost:3000`
 
 ---
+
