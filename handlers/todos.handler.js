@@ -1,5 +1,6 @@
 // handlers/todosHandler.js
-const todoModel = require('../models/todosModel');
+const todoModel = require('../models/todos.models');
+const { todoSchema } = require('../validators/todo.validator');
 
 exports.getTodos = async (req, res) => {
   try {
@@ -22,10 +23,10 @@ exports.getTodoById = async (req, res) => {
 
 exports.createTodo = async (req, res) => {
   try {
-    const { title } = req.body;
-    if (!title) return res.status(400).json({ message: 'Title is required' });
+    const { error, value } = todoSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: error.details[0].message });
 
-    const newTodo = await todoModel.addTodo(title);
+    const newTodo = await todoModel.addTodo(value.title);
     res.status(201).json(newTodo);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -34,8 +35,10 @@ exports.createTodo = async (req, res) => {
 
 exports.updateTodo = async (req, res) => {
   try {
-    const { title } = req.body;
-    const updated = await todoModel.updateTodo(req.params.id, title);
+    const { error, value } = todoSchema.validate(req.body);
+    if (error) return res.status(400).json({ message: error.details[0].message });
+
+    const updated = await todoModel.updateTodo(req.params.id, value.title);
     if (!updated) return res.status(404).json({ message: 'Todo not found' });
 
     res.json(updated);
@@ -43,6 +46,7 @@ exports.updateTodo = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.deleteTodo = async (req, res) => {
   try {
