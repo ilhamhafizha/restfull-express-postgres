@@ -1,58 +1,54 @@
 // handlers/todosHandler.js
-let todos = require('../models/todosModel');
+const todoModel = require('../models/todosModel');
 
-const getAllTodos = (req, res) => {
-  res.json(todos);
+exports.getTodos = async (req, res) => {
+  try {
+    const todos = await todoModel.getTodos();
+    res.json(todos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-const getTodoById = (req, res) => {
-  const id = parseInt(req.params.id);
-  const todo = todos.find((t) => t.id === id);
-  if (!todo) return res.status(404).json({ message: "Todo not found" });
-  res.json(todo);
+exports.getTodoById = async (req, res) => {
+  try {
+    const todo = await todoModel.getTodoById(req.params.id);
+    if (!todo) return res.status(404).json({ message: 'Todo not found' });
+    res.json(todo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-const createTodo = (req, res) => {
-  const { title, completed = false } = req.body;
-  const newTodo = {
-    id: todos.length + 1,
-    title,
-    completed
-  };
-  todos.push(newTodo);
-  res.status(201).json(newTodo);
+exports.createTodo = async (req, res) => {
+  try {
+    const { title } = req.body;
+    if (!title) return res.status(400).json({ message: 'Title is required' });
+
+    const newTodo = await todoModel.addTodo(title);
+    res.status(201).json(newTodo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-const updateTodo = (req, res) => {
-  const id = parseInt(req.params.id);
-  const todo = todos.find((t) => t.id === id);
-  if (!todo) return res.status(404).json({ message: "Todo not found" });
+exports.updateTodo = async (req, res) => {
+  try {
+    const { title } = req.body;
+    const updated = await todoModel.updateTodo(req.params.id, title);
+    if (!updated) return res.status(404).json({ message: 'Todo not found' });
 
-  const { title, completed } = req.body;
-  if (title !== undefined) todo.title = title;
-  if (completed !== undefined) todo.completed = completed;
-
-  res.json(todo);
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-const deleteTodo = (req, res) => {
-  const id = parseInt(req.params.id);
-  const initialLength = todos.length;
-  todos = todos.filter((t) => t.id !== id);
-
-  if (todos.length === initialLength)
-    return res.status(404).json({ message: "Todo not found" });
-
-  // Update model
-  require.cache[require.resolve('../models/todosModel')].exports = todos;
-
-  res.json({ message: "Todo deleted" });
-};
-
-module.exports = {
-  getAllTodos,
-  getTodoById,
-  createTodo,
-  updateTodo,
-  deleteTodo,
+exports.deleteTodo = async (req, res) => {
+  try {
+    await todoModel.deleteTodo(req.params.id);
+    res.json({ message: 'Todo deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
