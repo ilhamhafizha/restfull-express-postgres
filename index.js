@@ -1,3 +1,4 @@
+
 // index.js
 require('dotenv').config();
 
@@ -5,7 +6,9 @@ const express = require('express');
 const path = require('path');
 const todosRouter = require('./routes/todos.route');
 const userRoute = require('./routes/user.route');
-
+const categoryRoutes = require('./routes/category.routes');
+const priorityRoutes = require('./routes/priority.routes');
+const statusLogRoutes = require('./routes/statusLog.routes');
 const app = express();
 const PORT = 3000;
 
@@ -23,6 +26,9 @@ app.get('/', (req, res) => {
 // Mounting the todos router
 app.use('/api/todos', todosRouter);
 app.use('/api/users', userRoute);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/priorities', priorityRoutes);
+app.use('/api/status-logs', statusLogRoutes);
 
 // Error handling middleware 
 app.use((err, req, res, next) => {
