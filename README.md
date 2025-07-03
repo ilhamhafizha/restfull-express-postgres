@@ -12,7 +12,7 @@ https://documenter.getpostman.com/view/45884667/2sB34Zsjcj
 * Register & Login user
 * Autentikasi dengan JWT
 * CRUD Todo
-* CRUD Kategori, Prioritas, dan Log Status
+* CR Kategori, Prioritas, dan Log Status
 * Validasi input dengan Joi
 
 ---
