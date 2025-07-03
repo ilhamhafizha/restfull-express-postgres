@@ -3,6 +3,7 @@
 const express = require('express');
 const path = require('path');
 const todosRouter = require('./routes/todos.route');
+const userRoute = require('./routes/user.route');
 
 const app = express();
 const PORT = 3000;
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 
 // Mounting the todos router
 app.use('/api/todos', todosRouter);
+app.use('/api/users', userRoute);
 
 // Error handling middleware 
 app.use((err, req, res, next) => {
