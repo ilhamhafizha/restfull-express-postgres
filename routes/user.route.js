@@ -7,5 +7,4 @@ const handler = require('../handlers/user.handler');
 
 router.post('/register', validate(registerSchema), handler.register);
 router.post('/login', validate(loginSchema), handler.login);
-
 module.exports = router;
